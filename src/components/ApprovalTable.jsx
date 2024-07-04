@@ -34,11 +34,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const ApprovalTable = ({ data, getManagerList, getTeamLeadList }) => {
-  console.log({ getTeamLeadList });
-  const handleAccept = async (id, user) => {
+const ApprovalTable = ({ data, getManagerList, getTeamLeadList, user  }) => {
+  console.log(data,"data")
+  console.log(user);
+  const handleAccept = async (id) => {
     const token = localStorage.getItem("adminToken");
     if (user === "hr") {
+      console.log("hrid" , id)
       const result = await approveManagerAPI(id, token);
       console.log(result);
       if (result.status === 200) {
@@ -96,7 +98,7 @@ const ApprovalTable = ({ data, getManagerList, getTeamLeadList }) => {
                         size="small"
                         variant="contained"
                         color="success"
-                        onClick={() => handleAccept(row.id, row.user_type)}
+                        onClick={() => handleAccept(row.id)}
                       >
                         Approve
                       </Button>

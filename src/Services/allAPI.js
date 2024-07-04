@@ -25,7 +25,7 @@ export const getTraineesForApprovalAPI = async (token) => {
 //approve manager
 export const approveManagerAPI = async (id, token) => {
   return await commonAPI("POST", `${base_URL}/adminapi/hr/${id}/approve/`, "", {
-    Authorization: "Token " + token,
+    Authorization: "Token "+token,
   });
 };
 
