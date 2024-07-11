@@ -145,11 +145,11 @@ export const getDailyTaskAPI = async (token) => {
   });
 };
 //complete daily task
-export const updateDailyTaskAPI = async (token, id) => {
+export const updateDailyTaskAPI = async (token, obj,id) => {
   return await commonAPI(
     "POST",
     `${base_URL}/empapi/dailytask/${id}/mark_completed/`,
-    "",
+    obj,
     {
       Authorization: "Token " + token,
     }

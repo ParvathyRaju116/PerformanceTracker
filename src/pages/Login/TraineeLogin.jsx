@@ -35,6 +35,7 @@ const TraineeLogin = () => {
           text: "You have successfully logged in.",
         }).then(() => {
           navigate("/trainee");
+          localStorage.setItem("userID", JSON.stringify(response.data.id));
           localStorage.setItem("userData", JSON.stringify(response.data));
         });
       }

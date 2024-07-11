@@ -1,10 +1,13 @@
 import { getDailyTaskAPI, updateDailyTaskAPI } from "@/Services/allAPI";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function DailyTask() {
   const [allTask, setAllTask] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentTaskId, setCurrentTaskId] = useState(null);
+  const [file, setFile] = useState(null);
+
   const getDailyTask = async () => {
     const token = localStorage.getItem("Emp-token");
     const result = await getDailyTaskAPI(token);
@@ -17,14 +20,30 @@ export default function DailyTask() {
     getDailyTask();
   }, []);
 
-  const handleCheckbox = async (id) => {
-    const token = localStorage.getItem("TlToken");
-    const result = await updateDailyTaskAPI(token, id);
+  const handleButtonClick = (id) => {
+    console.log(id);
+    setCurrentTaskId(id);
+    setShowModal(true);
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleFileUpload = async () => {
+    const token = localStorage.getItem("Emp-token");
+    const formData = new FormData();
+    formData.append("file_data", file);
+
+    const result = await updateDailyTaskAPI(token, formData,currentTaskId);
     if (result.status === 200) {
       Swal.fire({
         icon: "success",
-        title: "Task Completed",
+        title: "File Uploaded and Task Completed",
       });
+      setShowModal(false);
+      setFile(null);
+      setCurrentTaskId(null);
       getDailyTask();
     }
   };
@@ -34,30 +53,60 @@ export default function DailyTask() {
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-50">
         Daily Tasks
       </h1>
-      <div className="space-y-4">
-        {allTask.length === 0 ? (
-          <p className="text-center mt-10">No Task Available</p>
-        ) : (
-          <>
-            {allTask.map((task) => (
-              <div className="flex items-center" key={task.id}>
-                <Checkbox
-                  className="mr-3"
-                  id="task-1"
-                  checked={task.is_completed}
-                  onClick={() => handleCheckbox(task.id)}
-                />
-                <label
-                  className="text-gray-700 dark:text-gray-400"
-                  htmlFor="task-1"
-                >
-                  {task.task}
-                </label>
-              </div>
-            ))}
-          </>
-        )}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white dark:bg-gray-900">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 border-b border-gray-200 text-gray-800 dark:text-gray-200">Task</th>
+              <th className="px-6 py-3 border-b border-gray-200 text-gray-800 dark:text-gray-200">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allTask.length === 0 ? (
+              <tr>
+                <td colSpan="2" className="text-center py-4">No Task Available</td>
+              </tr>
+            ) : (
+              allTask.map((task) => (
+                <tr key={task.id}>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-700 dark:text-gray-400">{task.task}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-700 dark:text-gray-400">
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                      onClick={() => handleButtonClick(task.id)}
+                    >
+                      Mark as Completed
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-4 rounded shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Upload File</h2>
+            <input type="file" onChange={handleFileChange} />
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded"
+                onClick={handleFileUpload}
+              >
+                Upload
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

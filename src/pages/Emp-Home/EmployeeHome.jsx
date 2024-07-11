@@ -1,17 +1,55 @@
 import { Link } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+} from "recharts";
+import { Paper, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const EmployeeHome = () => {
+  const [performanceData, setPerformanceData] = useState(null);
+  const token = localStorage.getItem("Emp-token");
+  const user = localStorage.getItem("userID");
+
+  useEffect(() => {
+    const fetchPerformanceDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/hrapi/Performance/${user}/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        );
+        setPerformanceData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch performance details:", error);
+      }
+    };
+
+    if (token && user) {
+      fetchPerformanceDetails();
+    }
+  }, [token, user]);
+
   return (
     <div className="wrapper">
       <h3 className="text-3xl font-medium text-center text-primary mb-6">
         Welcome
       </h3>
-      <div className="flex flex-col  flex-grow w-full mt-10">
+      <div className="flex flex-col flex-grow w-full mt-10">
         <div className="flex justify-start items-start h-5/6">
           {/* Cards container */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 w-full px-4">
             {/* Card 1 */}
-            <div className="max-w-sm  border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700">
+            <div className="max-w-sm border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700">
               <div className="p-6">
                 <div className="min-h-[100px]">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
@@ -21,7 +59,6 @@ const EmployeeHome = () => {
                     View my team created by team lead.
                   </p>
                 </div>
-
                 <Link to="/emp-team">
                   <button
                     type="button"
@@ -131,6 +168,42 @@ const EmployeeHome = () => {
                     </svg>
                   </button>
                 </Link>
+              </div>
+            </div>
+
+            <div className="w-full border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700 p-1">
+            <div className="">
+                {performanceData ? (
+                  <Paper elevation={5} className="relative">
+                    <div className="p-1">
+                      <Typography variant="body1" gutterBottom>
+                         {performanceData.employee}'s Perfomace
+                      </Typography>
+                      <div className="mt-1 flex-center">
+                        <BarChart
+                          width={400}
+                          height={300}
+                          data={[
+                            {
+                              name: performanceData.employee,
+                              Performance: performanceData.performance,
+                              Other: 100 - performanceData.performance,
+                            },
+                          ]}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="Performance" fill="#8884d8" />
+                        </BarChart>
+                      </div>
+                    </div>
+                  </Paper>
+                ) : (
+                  <p className="mt-4">No Performance Data.</p>
+                )}
               </div>
             </div>
           </div>
