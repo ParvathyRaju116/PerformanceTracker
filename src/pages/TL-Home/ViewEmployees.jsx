@@ -68,14 +68,14 @@ const ViewEmployees = () => {
                         className="underline cursor-pointer text-[-webkit-link]"
                         onClick={() => handleClick(employee)}
                       >
-                        {employee.Firstname} {employee.lastname}
+                        {employee.name} {employee.Firstname} {employee.lastname}
                       </span>
                     </td>
                     <td className="py-3 px-4 border whitespace-nowrap">
                       {employee.email_address}
                     </td>
                     <td className="py-3 px-4 border whitespace-nowrap">
-                      {employee.position}
+                      {employee.job_title}
                     </td>
                     <td className="py-3 px-4 border whitespace-nowrap">
                       {employee.phoneno}

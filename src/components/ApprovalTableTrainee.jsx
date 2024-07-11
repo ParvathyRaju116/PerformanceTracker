@@ -88,7 +88,9 @@ const ApprovalTableTrainee = ({ data, getTraineeList }) => {
                   <StyledTableRow key={row.id}>
                     <StyledTableCell component="th" scope="row">
                       <span className="capitalize">
-                        {row.Firstname + " " + row.lastname}
+                        {row.name
+                          ? row.name
+                          : `${row.Firstname} ${row.lastname}`}
                       </span>
                     </StyledTableCell>
                     <StyledTableCell align="right">

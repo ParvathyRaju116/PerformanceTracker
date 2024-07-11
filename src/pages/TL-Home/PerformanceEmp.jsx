@@ -12,7 +12,7 @@ function PerformanceEmp() {
         const fetchPerformanceDetails = async () => {
             try {
                 const response = await axios.get(
-                    "http://127.0.0.1:8000/teamleadapi/performance/",
+                    "http://127.0.0.1:8000/hrapi/Performance/",
                     {
                         headers: {
                             Authorization: `Token ${token}`,
