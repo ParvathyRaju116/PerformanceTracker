@@ -7,6 +7,7 @@ function AddDailyTask() {
   const [Dailytask, setDailyTask] = useState({
     id: "",
     task: "",
+    due_date: "",  // Add due_date field
   });
   console.log(Dailytask);
 
@@ -36,6 +37,7 @@ function AddDailyTask() {
       setDailyTask({
         id: "",
         task: "",
+        due_date: "",  // Reset due_date field
       });
 
       return response.data;
@@ -69,7 +71,7 @@ function AddDailyTask() {
                   setDailyTask({ ...Dailytask, id: e.target.value })
                 }
                 className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mb-5"
-              />{" "}
+              />
               <textarea
                 id="task"
                 name="task"
@@ -82,6 +84,19 @@ function AddDailyTask() {
                   setDailyTask({ ...Dailytask, task: e.target.value })
                 }
               ></textarea>
+              <label>Due date</label>
+              <input
+                id="due_date"
+                name="due_date"
+                type="date"
+                required
+                placeholder="Due Date"
+                value={Dailytask.due_date}
+                onChange={(e) =>
+                  setDailyTask({ ...Dailytask, due_date: e.target.value })
+                }
+                className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mb-5"
+              />
             </div>
             <Button type="submit">Submit</Button>
           </form>

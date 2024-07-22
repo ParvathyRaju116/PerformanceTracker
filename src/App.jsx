@@ -51,6 +51,7 @@ import AssignedProject from "./pages/TL-Home/AssignedProject";
 import ShowTraineeProfile from "./pages/TeamLead/ShowTraineeProfile";
 import ViewReviews from "./pages/Hr-Home/ViewReviews";
 import PerformanceEmp from "./pages/TL-Home/PerformanceEmp";
+import Landing from "./pages/Landing/Landing";
 
 const App = () => {
   const [projectData, setProjectData] = useState([]);
@@ -61,7 +62,8 @@ const App = () => {
         {/* <Navbar /> */}
         <Routes>
           {/* Common */}
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/schedule-meeting" element={<ScheduleMeeting />} />\
           {/* admin */}
           <Route path="/admin/login" element={<AdminLogin />} />

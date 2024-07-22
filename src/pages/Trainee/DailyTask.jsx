@@ -35,7 +35,7 @@ export default function DailyTask() {
     const formData = new FormData();
     formData.append("file_data", file);
 
-    const result = await updateDailyTaskAPI(token, formData,currentTaskId);
+    const result = await updateDailyTaskAPI(token, formData, currentTaskId);
     if (result.status === 200) {
       Swal.fire({
         icon: "success",
@@ -58,18 +58,20 @@ export default function DailyTask() {
           <thead>
             <tr>
               <th className="px-6 py-3 border-b border-gray-200 text-gray-800 dark:text-gray-200">Task</th>
+              <th className="px-6 py-3 border-b border-gray-200 text-gray-800 dark:text-gray-200">Due Date</th>
               <th className="px-6 py-3 border-b border-gray-200 text-gray-800 dark:text-gray-200">Actions</th>
             </tr>
           </thead>
           <tbody>
             {allTask.length === 0 ? (
               <tr>
-                <td colSpan="2" className="text-center py-4">No Task Available</td>
+                <td colSpan="3" className="text-center py-4">No Task Available</td>
               </tr>
             ) : (
               allTask.map((task) => (
                 <tr key={task.id}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-700 dark:text-gray-400">{task.task}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-700 dark:text-gray-400 ">{task.due_date}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-700 dark:text-gray-400">
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded"

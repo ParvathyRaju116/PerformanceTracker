@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
+import Swal from "sweetalert2";
 
 const AssignedProject = () => {
   const [assignedProject, setAssignedProject] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentProjectId, setCurrentProjectId] = useState(null);
+  const [link, setLink] = useState("");
   const token = localStorage.getItem("TlToken");
 
   useEffect(() => {
@@ -27,11 +31,16 @@ const AssignedProject = () => {
     fetchAssignedProjectDetail();
   }, [token]);
 
-  const handleAssignToEmp = async (projectId) => {
+  const handleCompleteButtonClick = (projectId) => {
+    setCurrentProjectId(projectId);
+    setShowModal(true);
+  };
+
+  const handleAssignToEmp = async () => {
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/teamleadapi/assignedprojects/${projectId}/project_completed/`,
-        {},
+        `http://127.0.0.1:8000/teamleadapi/assignedprojects/${currentProjectId}/project_completed/`,
+        { link },
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -40,14 +49,19 @@ const AssignedProject = () => {
       );
 
       if (response.status === 200) {
-        alert("Assignment marked as complete");
+        Swal.fire({
+          icon: "success",
+          title: "Assignment marked as complete",
+        });
         const updatedProjects = assignedProject.map((project) => {
-          if (project.id === projectId) {
+          if (project.id === currentProjectId) {
             return { ...project, status: "completed" };
           }
           return project;
         });
         setAssignedProject(updatedProjects);
+        setShowModal(false);
+        setLink("");
       }
     } catch (error) {
       console.error("Failed to mark project as complete:", error);
@@ -69,33 +83,19 @@ const AssignedProject = () => {
               <tr>
                 <th className="py-3 px-4 border-b border-gray-300">Id</th>
                 <th className="py-3 px-4 border-b border-gray-300">Project</th>
-                <th className="py-3 px-4 border-b border-gray-300">
-                  Team Lead
-                </th>
-                <th className="py-3 px-4 border-b border-gray-300">
-                  Team Name
-                </th>
-                <th className="py-3 px-4 border-b border-gray-300">
-                  Assigned to Trainees
-                </th>
+                <th className="py-3 px-4 border-b border-gray-300">Team Lead</th>
+                <th className="py-3 px-4 border-b border-gray-300">Team Name</th>
+                <th className="py-3 px-4 border-b border-gray-300">Assigned to Trainees</th>
                 <th className="py-3 px-4 border-b border-gray-300">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {assignedProject.map((assigned, index) => (
                 <tr key={index}>
-                  <td className="py-3 px-4 border whitespace-nowrap">
-                    {assigned.id}
-                  </td>
-                  <td className="py-3 px-4 border whitespace-nowrap">
-                    {assigned.project}
-                  </td>
-                  <td className="py-3 px-4 border whitespace-nowrap">
-                    {assigned.teamlead}
-                  </td>
-                  <td className="py-3 px-4 border whitespace-nowrap">
-                    {assigned.team}
-                  </td>
+                  <td className="py-3 px-4 border whitespace-nowrap">{assigned.id}</td>
+                  <td className="py-3 px-4 border whitespace-nowrap">{assigned.project}</td>
+                  <td className="py-3 px-4 border whitespace-nowrap">{assigned.teamlead}</td>
+                  <td className="py-3 px-4 border whitespace-nowrap">{assigned.team}</td>
                   <td className="py-3 px-4 border whitespace-nowrap">
                     <Link to={`/assign-to-emp/${assigned.id}`}>
                       <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -108,7 +108,7 @@ const AssignedProject = () => {
                       <span className="text-green-600">Completed</span>
                     ) : (
                       <button
-                        onClick={() => handleAssignToEmp(assigned.id)}
+                        onClick={() => handleCompleteButtonClick(assigned.id)}
                         type="button"
                         className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                       >
@@ -123,6 +123,38 @@ const AssignedProject = () => {
         </div>
       ) : (
         <p className="mt-4">No projects found.</p>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Complete Project</h2>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Project Link:
+              <input
+                type="url"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="Enter project link"
+              />
+            </label>
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded"
+                onClick={handleAssignToEmp}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -298,7 +298,7 @@ const TeamLeadRegister = () => {
                     <p className="mt-4 text-center text-sm text-gray-600">
                         Already have an account?{" "}
                         <Link
-                            to={"/"}
+                            to={"/login"}
                             className="font-semibold text-indigo-600 hover:text-indigo-500"
                         >
                             Log in
