@@ -8,6 +8,12 @@ export const getManagersForApprovalAPI = async (token) => {
   });
 };
 
+export const getAllProjects = async (token) => {
+  return await commonAPI("GET", `${base_URL}/adminapi/all/projects/`, "", {
+    Authorization: "Token " + token,
+  });
+};
+
 //get list of team lead to approve
 export const getTeamLeadsForApprovalAPI = async (token) => {
   return await commonAPI("GET", `${base_URL}/adminapi/teamlead/`, "", {

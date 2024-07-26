@@ -92,6 +92,10 @@ const TLProjectDetails = ({ teamLeadName, updateRequests }) => {
     }
   };
 
+  const openProjectLink = (link) => {
+    window.open(link, "_blank");
+  };
+
   return (
     <div className="wrapper mt-8 h-96 overflow-y-auto">
       <h1 className="text-2xl font-semibold mb-4">Registered Projects</h1>
@@ -122,11 +126,17 @@ const TLProjectDetails = ({ teamLeadName, updateRequests }) => {
             <tbody className="divide-y divide-gray-200">
               {projectData.map((project, index) => (
                 <tr key={index}>
+                  
                   <td className="py-3 px-4 border whitespace-nowrap">
                     {project.id}
                   </td>
                   <td className="py-3 px-4 border whitespace-nowrap">
-                    {project.topic}
+                  {project.link ? 
+                      <div onClick={() => openProjectLink(project.link)}>
+                        {project.project_name}
+                      </div> : ""
+                    }
+                    
                   </td>
                   <td className="py-3 px-4 border whitespace-nowrap">
                     {project.description}

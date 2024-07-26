@@ -3,6 +3,7 @@ import axios from "axios";
 import { DeleteIcon } from "lucide-react";
 import { IconButton } from "@mui/material";
 import Swal from "sweetalert2";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const HrProjectDetails = () => {
   const [projectData, setProjectData] = useState([]);
@@ -35,23 +36,27 @@ const HrProjectDetails = () => {
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel!",
     });
-    if(result.isConfirmed){
+    if (result.isConfirmed) {
       try {
-      await axios.delete(`http://127.0.0.1:8000/hrapi/projects/${id}/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Project Deleted",
-      });
-      
-      setProjectData(projectData.filter((project) => project.id !== id));
+        await axios.delete(`http://127.0.0.1:8000/hrapi/projects/${id}/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+        Swal.fire({
+          icon: "success",
+          title: "Project Deleted",
+        });
 
-    } catch (error) {
-      console.error("Failed to delete project:", error);
-    }}
+        setProjectData(projectData.filter((project) => project.id !== id));
+      } catch (error) {
+        console.error("Failed to delete project:", error);
+      }
+    }
+  };
+
+  const openProjectLink = (link) => {
+    window.open(link, "_blank");
   };
 
   return (
@@ -62,28 +67,51 @@ const HrProjectDetails = () => {
           <table className="min-w-full bg-white rounded-md shadow-md">
             <thead className="bg-gray-200">
               <tr>
-                <th className="py-3 px-4 border-b border-gray-300">Project Id</th>
-                <th className="py-3 px-4 border-b border-gray-300">Project Title</th>
-                <th className="py-3 px-4 border-b border-gray-300">Project Description</th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Project Id
+                </th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Project Title
+                </th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Project Description
+                </th>
                 <th className="py-3 px-4 border-b border-gray-300">Due Date</th>
-                <th className="py-3 px-4 border-b border-gray-300">Project Status</th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Project Status
+                </th>
                 <th className="py-3 px-4 border-b border-gray-300">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {projectData.map((project, index) => (
                 <tr key={index}>
-                  <td className="py-3 px-4 border whitespace-nowrap">{project.id}</td>
-                  <td className="py-3 px-4 border whitespace-nowrap">{project.topic}</td>
-                  <td className="py-3 px-4 border whitespace-nowrap">{project.description}</td>
-                  <td className="py-3 px-4 border whitespace-nowrap">{project.end_date}</td>
-                  <td className="py-3 px-4 border whitespace-nowrap">{project.project_status}</td>
+                  <td className="py-3 px-4 border whitespace-nowrap">
+                    {project.id}
+                  </td>
+                  <td className="py-3 px-4 border whitespace-nowrap">
+                    {project.topic}
+                  </td>
+                  <td className="py-3 px-4 border whitespace-nowrap">
+                    {project.description}
+                  </td>
+                  <td className="py-3 px-4 border whitespace-nowrap">
+                    {project.end_date}
+                  </td>
+                  <td className="py-3 px-4 border whitespace-nowrap">
+                    {project.project_status}
+                  </td>
                   <td className="py-3 px-4 border whitespace-nowrap">
                     <IconButton
                       onClick={() => handleDeletePerformance(project.id)}
                     >
                       <DeleteIcon style={{ color: "red" }} />
                     </IconButton>
+                    {project.link && (
+                      <IconButton onClick={() => openProjectLink(project.link)}>
+                        <VisibilityIcon style={{ color: "blue" }} />
+                      </IconButton>
+                    )}
                   </td>
                 </tr>
               ))}

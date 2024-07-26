@@ -33,6 +33,7 @@ b, strong{
 }
 .navbar-brand {
     font-weight: 700;
+    font-size: 2rem; 
 }
 .navbar-inverse .navbar-nav .nav-link, .navbar .navbar-brand, .navbar-toggler span {
     color: rgba(255,255,255,.8);

@@ -52,6 +52,7 @@ import ShowTraineeProfile from "./pages/TeamLead/ShowTraineeProfile";
 import ViewReviews from "./pages/Hr-Home/ViewReviews";
 import PerformanceEmp from "./pages/TL-Home/PerformanceEmp";
 import Landing from "./pages/Landing/Landing";
+import ProjectList from "./pages/Admin/ProjectList";
 
 const App = () => {
   const [projectData, setProjectData] = useState([]);
@@ -72,6 +73,11 @@ const App = () => {
             <Route
               path="/admin/view-meeting"
               element={<ViewMeeting role="admin" />}
+            />
+
+            <Route
+              path="/team-project"
+              element={<ProjectList role="admin" />}
             />
 
             <Route path="/admin/view-employees" element={<ViewEmployees />} />

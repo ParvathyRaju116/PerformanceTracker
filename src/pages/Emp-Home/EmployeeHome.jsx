@@ -171,41 +171,45 @@ const EmployeeHome = () => {
               </div>
             </div>
 
-            <div className="w-full border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700 p-1">
-            <div className="">
-                {performanceData ? (
-                  <Paper elevation={5} className="relative">
-                    <div className="p-1">
-                      <Typography variant="body1" gutterBottom>
-                         {performanceData.employee}'s Perfomace
-                      </Typography>
-                      <div className="mt-1 flex-center">
-                        <BarChart
-                          width={400}
-                          height={300}
-                          data={[
-                            {
-                              name: performanceData.employee,
-                              Performance: performanceData.performance,
-                              Other: 100 - performanceData.performance,
-                            },
-                          ]}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="Performance" fill="#8884d8" />
-                        </BarChart>
+            {performanceData ? (
+              <div className="w-full border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700 p-1">
+                <div className="">
+                  {performanceData ? (
+                    <Paper elevation={5} className="relative">
+                      <div className="p-1">
+                        <Typography variant="body1" gutterBottom>
+                          {performanceData.employee}'s Perfomace
+                        </Typography>
+                        <div className="mt-1 flex-center">
+                          <BarChart
+                            width={400}
+                            height={300}
+                            data={[
+                              {
+                                name: performanceData.employee,
+                                Performance: performanceData.performance,
+                                Other: 100 - performanceData.performance,
+                              },
+                            ]}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="Performance" fill="#8884d8" />
+                          </BarChart>
+                        </div>
                       </div>
-                    </div>
-                  </Paper>
-                ) : (
-                  <p className="mt-4">No Performance Data.</p>
-                )}
+                    </Paper>
+                  ) : (
+                    <p className="mt-4">No Performance Data.</p>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

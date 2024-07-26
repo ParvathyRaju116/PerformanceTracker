@@ -32,7 +32,7 @@ const Landing = () => {
         >
           <span className="icon-sm"></span>
         </button>
-        <a className="navbar-brand hero-heading" href="#">
+        <a className="navbar-brand" href="#">
           Talent Trove
         </a>
         <div className="collapse navbar-collapse" id="navbarCollapse">
@@ -81,7 +81,7 @@ const Landing = () => {
                 Optimize Your Team's Performance with{" "}
                 <b className="text-primary-light">Talent Trove</b>
               </h2>
-              <p className="mt-5">
+              <p className="mt-5 fs-5">
                 In today's fast-paced technology landscape, managing IT
                 professional performance is crucial. Talent Trove helps predict
                 performance levels and assess work-related stress, offering
