@@ -53,6 +53,7 @@ import ViewReviews from "./pages/Hr-Home/ViewReviews";
 import PerformanceEmp from "./pages/TL-Home/PerformanceEmp";
 import Landing from "./pages/Landing/Landing";
 import ProjectList from "./pages/Admin/ProjectList";
+import ViewTeaminDetail from "./pages/TL-Home/TeamLeadEmplDetail";
 
 const App = () => {
   const [projectData, setProjectData] = useState([]);
@@ -139,6 +140,10 @@ const App = () => {
               element={<AddDailyTask />}
             />
 
+            <Route
+              path="/team-lead/view-teamindetail"
+              element={<ViewTeaminDetail />}
+            />
             <Route path="/team-lead/login" element={<TeamLeadLogin />} />
             <Route
               path="/team-lead/view-daily-task"

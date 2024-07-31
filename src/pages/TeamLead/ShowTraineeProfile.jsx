@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Review from '@/components/Review';
@@ -8,10 +8,31 @@ const ShowTraineeProfile = () => {
   const { state } = location;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [performance, setPerformance] = useState('');
+  const [currentPerformance, setCurrentPerformance] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const openModal = () => setIsModalOpen(true);
+  useEffect(() => {
+    const fetchPerformance = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/hrapi/perfomance/create/${state.id}/`, {
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('TlToken')}`,
+          },
+        });
+        setCurrentPerformance(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch performance data:', error);
+      }
+    };
+
+    fetchPerformance();
+  }, [state.id]);
+
+  const openModal = () => {
+    setPerformance(currentPerformance || '');
+    setIsModalOpen(true);
+  };
   const closeModal = () => setIsModalOpen(false);
 
   const handleSubmit = async (event) => {
@@ -19,14 +40,21 @@ const ShowTraineeProfile = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/hrapi/perfomance/create/${state.id}/`, {
-        performance,
-      }, {
+      const method = currentPerformance ? 'patch' : 'post';
+      const url = currentPerformance
+        ? `http://127.0.0.1:8000/hrapi/perfomance/create/${state.id}/`
+        : `http://127.0.0.1:8000/hrapi/performance/create/${state.id}/`;
+
+      const response = await axios({
+        method,
+        url,
+        data: { performance },
         headers: {
           'Authorization': `Token ${localStorage.getItem('TlToken')}`,
-        }
+        },
       });
-      console.log(response.data);
+
+      setCurrentPerformance(response.data.data);
       closeModal();
     } catch (error) {
       console.error('There was an error!', error);
@@ -41,7 +69,9 @@ const ShowTraineeProfile = () => {
       {/* Profile */}
       <div className="p-6 max-w-lg mx-auto">
         <div>
-          <button onClick={openModal} className="bg-blue-500 text-white p-2 rounded">Add Performance</button>
+          <button onClick={openModal} className="bg-blue-500 text-white p-2 rounded">
+            {currentPerformance ? 'Edit Performance' : 'Add Performance'}
+          </button>
         </div>
         <h1 className="text-3xl font-semibold text-center my-12">
           <span className="capitalize">{state.name}</span>&apos;s Profile
@@ -94,7 +124,7 @@ const ShowTraineeProfile = () => {
           <div className="fixed inset-0 bg-black opacity-50" onClick={closeModal}></div>
           <div className="bg-white p-6 rounded-lg z-10 max-w-md w-full">
             <button className="mb-4" onClick={closeModal}>Close</button>
-            <h2 className="text-2xl mb-4">Add Performance</h2>
+            <h2 className="text-2xl mb-4">{currentPerformance ? 'Edit Performance' : 'Add Performance'}</h2>
             <form onSubmit={handleSubmit}>
               <label htmlFor="performance">Performance:</label>
               <input

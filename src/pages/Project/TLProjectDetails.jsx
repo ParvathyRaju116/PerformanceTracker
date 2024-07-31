@@ -132,9 +132,9 @@ const TLProjectDetails = ({ teamLeadName, updateRequests }) => {
                   </td>
                   <td className="py-3 px-4 border whitespace-nowrap">
                   {project.link ? 
-                      <div onClick={() => openProjectLink(project.link)}>
-                        {project.project_name}
-                      </div> : ""
+                      <div style={{ color: "blue", cursor: "pointer" }} onClick={() => openProjectLink(project.link)}>
+                       {project.topic}
+                      </div> : `${project.topic}`
                     }
                     
                   </td>
