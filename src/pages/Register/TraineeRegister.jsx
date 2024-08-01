@@ -128,7 +128,7 @@ const TraineeRegister = () => {
                                 value={department}
                                 onChange={(e) => setDepartment(e.target.value)}
                                 required
-                                placeholder="Position"
+                                placeholder="Department"
                                 className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             />
                             <input
@@ -146,7 +146,7 @@ const TraineeRegister = () => {
                                 value={home_address}
                                 onChange={(e) => setHomeAdress(e.target.value)}
                                 required
-                                placeholder="Position"
+                                placeholder="Home Address"
                                 className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             />
                             <input
