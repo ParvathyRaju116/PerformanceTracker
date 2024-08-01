@@ -51,9 +51,7 @@ const TaskUpdateLists = () => {
                   <th className="py-3 px-4 border-b border-gray-300">
                     Description
                   </th>
-                  <th className="py-3 px-4 border-b border-gray-300">
-                    Performance Level
-                  </th>
+                  
                 </tr>
               </thead>
 
@@ -81,9 +79,7 @@ const TaskUpdateLists = () => {
                     <td className="py-3 px-4 border whitespace-nowrap">
                       {taskupdate.description}
                     </td>
-                    <td className="py-3 px-4 border whitespace-nowrap">
-                      {taskupdate.performance_level}
-                    </td>
+                 
                   </tr>
                 ))}
               </tbody>
