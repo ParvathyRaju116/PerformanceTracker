@@ -43,7 +43,7 @@ const ShowTraineeProfile = () => {
       const method = currentPerformance ? 'patch' : 'post';
       const url = currentPerformance
         ? `http://127.0.0.1:8000/hrapi/perfomance/create/${state.id}/`
-        : `http://127.0.0.1:8000/hrapi/performance/create/${state.id}/`;
+        : `http://127.0.0.1:8000/hrapi/perfomance/create/${state.id}/`;
 
       const response = await axios({
         method,
