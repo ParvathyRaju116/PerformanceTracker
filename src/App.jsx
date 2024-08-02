@@ -54,6 +54,8 @@ import PerformanceEmp from "./pages/TL-Home/PerformanceEmp";
 import Landing from "./pages/Landing/Landing";
 import ProjectList from "./pages/Admin/ProjectList";
 import ViewTeaminDetail from "./pages/TL-Home/TeamLeadEmplDetail";
+import EmployeePerfomance from "./pages/Emp-Home/EmployeePerfomance";
+
 
 const App = () => {
   const [projectData, setProjectData] = useState([]);
@@ -206,6 +208,7 @@ const App = () => {
             />
 
             <Route path="/emp-team" element={<EmpTeam />} />
+            <Route path="/emp-perfomance" element={<EmployeePerfomance />} />
             <Route path="/task-chart" element={<TaskChart />} />
             <Route path="/trainee/daily-task" element={<DailyTask />} />
             <Route path="/update-tasks/:id" element={<UpdateTask />} />

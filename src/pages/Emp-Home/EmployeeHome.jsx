@@ -13,31 +13,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const EmployeeHome = () => {
-  const [performanceData, setPerformanceData] = useState(null);
-  const token = localStorage.getItem("Emp-token");
-  const user = localStorage.getItem("userID");
-
-  useEffect(() => {
-    const fetchPerformanceDetails = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/hrapi/Performance/${user}/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-          }
-        );
-        setPerformanceData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch performance details:", error);
-      }
-    };
-
-    if (token && user) {
-      fetchPerformanceDetails();
-    }
-  }, [token, user]);
 
   return (
     <div className="wrapper">
@@ -171,45 +146,46 @@ const EmployeeHome = () => {
               </div>
             </div>
 
-            {performanceData ? (
-              <div className="w-full border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700 p-1">
-                <div className="">
-                  {performanceData ? (
-                    <Paper elevation={5} className="relative">
-                      <div className="p-1">
-                        <Typography variant="body1" gutterBottom>
-                          {performanceData.employee}'s Perfomace
-                        </Typography>
-                        <div className="mt-1 flex-center">
-                          <BarChart
-                            width={400}
-                            height={300}
-                            data={[
-                              {
-                                name: performanceData.employee,
-                                Performance: performanceData.performance,
-                                Other: 100 - performanceData.performance,
-                              },
-                            ]}
-                          >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="Performance" fill="#8884d8" />
-                          </BarChart>
-                        </div>
-                      </div>
-                    </Paper>
-                  ) : (
-                    <p className="mt-4">No Performance Data.</p>
-                  )}
+            <div className="max-w-sm border rounded-lg shadow bg-[rgb(31,41,55)] border-gray-700">
+              <div className="p-6">
+                <div className="min-h-[100px]">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                    My Perfomance
+                  </h5>
+                  <p className="font-normal text-gray-400">
+                    View my Perfomance created by team lead.
+                  </p>
                 </div>
+                <Link to="/emp-perfomance">
+                  <button
+                    type="button"
+                    className="mt-4 bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 text-white font-medium rounded-lg text-sm flex items-center px-6 py-2.5"
+                  >
+                    <span>View</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6 ml-2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                  </button>
+                </Link>
               </div>
-            ) : (
-              ""
-            )}
+            </div>
+           
           </div>
         </div>
       </div>
